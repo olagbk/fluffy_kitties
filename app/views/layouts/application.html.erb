@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fluffy Kitties</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<!-- Shell -->
+<div class="shell">
+  <!-- Header -->
+  <div id="header">
+    <h1 id="logo"><a href="/"></a></h1>
+    <!-- Cart -->
+    <div id="cart" class="logged-in"> <a href="/api/cart" class="cart-link">Your Shopping Cart</a>
+      <div class="cl">&nbsp;</div>
+      <span>Articles: <strong><span id="cart-arts"></span></strong></span> &nbsp;&nbsp; <span>Cost: <strong>$<span id="cart-cost"></span></strong></span> </div>
+    <!-- End Cart -->
+    <!-- Navigation -->
+    <div id="navigation">
+      <ul>
+        <li><a href="/" class="active">Home</a></li>
+        <li class="logged-out"><a href="/api/users/new">Create an account</a></li>
+        <li class="logged-out"><a href="/api/login">Log in</a></li>
+        <li class="logged-in"><a href="/" id="logout">Log out</a></li>
+      </ul>
+    </div>="   <!-- End Navigation -->
+  </div>
+  <!-- End Header -->
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <!-- Categories -->
+    <div class="box categories">
+      <h2>Categories <span></span></h2>
+      <div id="box-content"></div>
+    </div>
+    <!-- End Categories -->
+  </div>
+  <!-- End Sidebar -->
+
+  <div id="content">
+  <%= yield %>
+  </div>
+
+  <div class="cl">&nbsp;</div>
+</div>
+<!-- End Main -->
+<!-- Side Full -->
+<div class="side-full">
+  <!-- More Products -->
+  <div class="more-products">
+
+    <div id="more-products-holder"></div>
+    <div class="more-nav"> <a href="#" class="prev">previous</a> <a href="#" class="next">next</a> </div>
+  </div>
+
+
+  <!-- End More Products -->
+
+</div>
+<!-- End Side Full -->
+
+<!-- Footer -->
+<div id="footer">
+  <p class="left"> <a href="#">Home</a> <span>|</span> <a href="#">My Account</a></p>
+  <p class="right"> Design by <a href="http://chocotemplates.com">Chocotemplates.com</a> </p>
+</div>
+<!-- End Footer -->
+<!-- End Shell -->
+<!--templates  -->
+<script id="slides-template" type="text/x-handlebars-template">
+  <ul>
+    {{#each slides}}
+    <li><a href="#"><img src="assets/{{this}}" alt="" /></a></li>
+    {{/each}}
+  </ul>
+</script>
+
+<script id="main-template" type="text/x-handlebars-template">
+  <ul>
+    {{#each items}}
+    <li><a href="#"><img src="assets/{{path}}" alt="" /></a>
+      <div class="product-info">
+        <h3>{{category}}</h3>
+        <div class="product-desc">
+          <p>{{name}}</p>
+          <strong class="price">${{price}}</strong>
+        </div>
+      </div>
+    </li>
+    {{/each}}
+  </ul>
+</script>
+
+<script id="categories-template" type="text/x-handlebars-template">
+  <ul>
+    {{#each categories}}
+    <li><a href="/items/{{this}}" class="category-link" id={{this}}>{{this}} Kitties</a></li>
+    {{/each}}
+  </ul>
+</script>
+
+<script id="more-template" type="text/x-handlebars-template">
+  <ul>
+    {{#each images}}
+    <li><a href="#"><img src="/assets/{{this}}" alt="" /></a></li>
+    {{/each}}
+  </ul>
+</script>
+
+<script id="list-items-template" type="text/x-handlebars-template">
+  <h2 class="cat-name">{{category}} kitties</h2>
+  <div id="cat-products">
+    {{#each items}}
+    <div class="cat-product">
+      <ul>
+        <li class="cat-photo"><img src="/assets/{{photo}}" /></li>
+        <li class="cat-product-info">
+          <div>
+            <h3>{{name}}</h3>
+            <ul>
+              <li>Price: <span class="price-tag">{{price}}</span></li><br>
+              <li> In stock: ???</li>
+            </ul>
+            <ul class="cart-menu">
+              <li><a  class="add-cart" id="{{id}}">Add to cart</a></li><br>
+              <li><a href="">Buy now</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <br>
+    {{/each}}
+  </div>
+</script>
+
+<script id="cart-template" type="text/x-handlebars-template">
+  <h2 class="cat-name">Your cart</h2>
+  <div id="cart-products">
+    {{#each articles}}
+    <div class="cart-product">
+      <ul>
+        <li class="cart-photo"><img src="/assets/{{photo}}" /></li>
+        <li class="cart-product-info">
+          <div>
+            <h3>{{name}}</h3>
+            <ul>
+              <li>Price: <span class="price-tag">{{price}}</span></li><br>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <br>
+    {{/each}}
+  </div>
+</script>
+
+</body>
+</html>
