@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
   root 'page#index'
   get "home" => 'page#index'
+  get "cart" => "page#cart"
+  get "items/:category" => "page#list_items"
+
   namespace :api do
     get "login" => "users#login"
     get "users/login" => "users#verify"
-    get "cart" => "items#cart"
+
     get "items/add" => "items#add"
     resources :items, :users
   end
@@ -23,7 +26,6 @@ Rails.application.routes.draw do
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
-  get "items/:category" => "page#list_items"
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

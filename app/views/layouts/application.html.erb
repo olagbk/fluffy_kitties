@@ -13,9 +13,7 @@
   <div id="header">
     <h1 id="logo"><a href="/"></a></h1>
     <!-- Cart -->
-    <div id="cart" class="logged-in"> <a href="/api/cart" class="cart-link">Your Shopping Cart</a>
-      <div class="cl">&nbsp;</div>
-      <span>Articles: <strong><span id="cart-arts"></span></strong></span> &nbsp;&nbsp; <span>Cost: <strong>$<span id="cart-cost"></span></strong></span> </div>
+    <div id="cart"></div>
     <!-- End Cart -->
     <!-- Navigation -->
     <div id="navigation">
@@ -25,7 +23,7 @@
         <li class="logged-out"><a href="/api/login">Log in</a></li>
         <li class="logged-in"><a href="/" id="logout">Log out</a></li>
       </ul>
-    </div>="   <!-- End Navigation -->
+    </div>   <!-- End Navigation -->
   </div>
   <!-- End Header -->
   <!-- Sidebar -->
@@ -85,12 +83,19 @@
         <h3>{{category}}</h3>
         <div class="product-desc">
           <p>{{name}}</p>
-          <strong class="price">${{price}}</strong>
+          <strong class="price">${{#round}}{{price}}{{/round}}</strong>
         </div>
       </div>
     </li>
     {{/each}}
   </ul>
+</script>
+
+<script id="cart-info-template" type="text/x-handlebars-template">
+  <a href="/cart" class="cart-link">Your Shopping Cart</a>
+  <div class="cl">&nbsp;</div>
+  <span>Articles: <strong><span id="cart-arts">{{#length}}{{items}}{{/length}}</span></strong></span> &nbsp;&nbsp;
+  <span>Cost: <strong>$<span id="cart-cost">{{#round}}{{#total}}{{items}}{{/total}}{{/round}}</span></strong></span>
 </script>
 
 <script id="categories-template" type="text/x-handlebars-template">
@@ -120,7 +125,7 @@
           <div>
             <h3>{{name}}</h3>
             <ul>
-              <li>Price: <span class="price-tag">{{price}}</span></li><br>
+              <li>Price: <span class="price-tag">{{#round}}{{price}}{{/round}}</span></li><br>
               <li> In stock: ???</li>
             </ul>
             <ul class="cart-menu">
@@ -137,7 +142,7 @@
 </script>
 
 <script id="cart-template" type="text/x-handlebars-template">
-  <h2 class="cat-name">Your cart</h2>
+
   <div id="cart-products">
     {{#each articles}}
     <div class="cart-product">
@@ -145,9 +150,10 @@
         <li class="cart-photo"><img src="/assets/{{photo}}" /></li>
         <li class="cart-product-info">
           <div>
-            <h3>{{name}}</h3>
             <ul>
-              <li>Price: <span class="price-tag">{{price}}</span></li><br>
+              <li class="cart-el-name">{{name}}</li>
+              <li class="cart-el-price">${{#round}}{{price}}{{/round}}</li>
+              <li class="cart-el-remove"><a href="" class="remove-link" id="{{id}}">Remove from cart</a></li>
             </ul>
           </div>
         </li>

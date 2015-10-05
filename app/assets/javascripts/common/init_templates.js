@@ -55,8 +55,8 @@ var Templates = {
                 })
             }
             var html = template(context);
-            $("#more-products-holder").append(html);
-            $("#more-products-holder ul li").last().addClass("last");
+            $("#more-products-holder").html(html);
+
         }
 
         function categories() {
@@ -64,51 +64,54 @@ var Templates = {
             var template = Handlebars.compile(source);
             var context = {categories: ["African", "American", "Asian", "Australian", "European", "Alien"]};
             var html = template(context);
-            $("#box-content").append(html);
+            $("#box-content").html(html);
             $(".category-link").click(function () {
                 var category = $(this).attr("id");
             })
         }
+        function cart(){
+            var source = $("#cart-info-template").html();
+            var template = Handlebars.compile(source);
+            var cart = (localStorage.cart)? JSON.parse(localStorage.cart): [];
+            var context = {articles: Object.keys(cart).length, items: cart};
+            var html = template(context);
+            $("#cart").html(html);
+        }
 
         footer();
         categories();
+        cart();
     },
     listItems: function(category, items){
 
         var source = $("#list-items-template").html();
         var template = Handlebars.compile(source);
         var context = {category: category, items: items};
+        var cat_items = {};
+
         $.each(context.items, function (item_idx, item_obj){
-            item_obj.price = Math.round(item_obj.price * 100) / 100
-        })
+            cat_items[item_obj.id] = item_obj;
+        });
+
         var html = template(context);
         $("#content").append(html);
+
         $(".add-cart").click(function(){
-            var item = $(this).attr("id");
-            $.ajax({
-                type: "GET",
-                url: "/api/items/add",
-                data: {
-                    id: item
-                },
-                success: function(item_obj) {
 
-                    var cart = (localStorage.cart)? JSON.parse(localStorage.cart): new Cart;
-                    cart.articles.push(item_obj);
-                    cart.cost += Math.round(item_obj.price*100)/100;
-                    $("#cart-cost").text(cart.cost);
-                    $("#cart-arts").text(cart.articles.length);
-                    localStorage.cart = JSON.stringify(cart);
-                }
-            })
+            var item_id = $(this).attr("id");
+            var item = cat_items[item_id];
+            var cart = (localStorage.cart)? JSON.parse(localStorage.cart): [];
+            cart.push(item);
+            localStorage.cart = JSON.stringify(cart);
+            Templates.layout();
+
         })
-
-
     },
-    cart: function(){
+    listCart: function(){
         var source = $("#cart-template").html();
         var template = Handlebars.compile(source);
-        var context = cart.articles;
+        var cart = JSON.parse(localStorage.cart);
+        var context = {articles: cart};
         var html = template(context);
         $("#content").append(html);
     }
