@@ -26,8 +26,9 @@ a:hover { color:#666; text-decoration: none; }
 
 
 
+h1 {font-size: 26px}
 h2 { font-size:14px; line-height:16px; padding: 0; margin: 0 }
-h3 { font-size:12px; line-height:14px; text-transform: uppercase; color:#000; }
+h3 { font-size:16px; line-height:14px; text-transform: uppercase; color:#000; }
 h4 { font-size:12px; line-height:14px; text-transform: uppercase; color:#000; }
 
 h2.cat-name {
@@ -281,20 +282,49 @@ h3.ico4 { background-image:asset-data-url("ico4.gif");}
 #footer span{ padding:0 2px;}
 
 #cart-header {
-  ul {
-    width: 100%;
-    padding-bottom: 30px;
-    text-align: center;
-    background-color: white;
+  width: 100%;
+  text-align: center;
+  background-color: white;
+  height: 150px;
 
-    li {
-      display: inline-block;
-      margin-right: 0px;
+  &>span{
+    float: left;
+    display: block;
+    margin-right: 0px;
 
-      ul li {
-        display: block;
-        text-align: left;
-      }
+    position: relative;
+    top: 50%;
+
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+
+    h2{
+      margin: 0px 20px;
     }
+
+    ul.cart-links li {
+      display: block;
+      text-align: left;
+    }
+    
+    &:last-of-type{
+      float: right;
+      padding-right: 10px;
+    }
+  }
+}
+
+#order-processed {
+  text-align: center;
+  h1 {
+    padding: 10px;
+    text-transform: uppercase;
+  }
+  img {
+    width: 500px;
+    border: 1px solid black;
   }
 }

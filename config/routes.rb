@@ -1,15 +1,24 @@
 Rails.application.routes.draw do
+
+
+  get 'orders/create'
+
   root 'page#index'
   get "home" => 'page#index'
   get "cart" => "page#cart"
   get "items/:category" => "page#list_items"
+  get "login" => "page#login"
+  get "signup" => "page#signup"
+  get "checkout" => "page#checkout"
+  get "processed" => "page#processed"
+
+  resources :transactions
 
   namespace :api do
-    get "login" => "users#login"
-    get "users/login" => "users#verify"
 
-    get "items/add" => "items#add"
-    resources :items, :users
+    get "users/login" => "users#verify"
+    resources :items, :users, :addresses, :orders
+
   end
 
 

@@ -44,6 +44,7 @@ var Templates = {
         products();
     },
     layout: function () {
+        setHeaders();
         function footer() {
             var counter = 0;
             var source = $("#more-template").html();
@@ -72,8 +73,8 @@ var Templates = {
         function cart(){
             var source = $("#cart-info-template").html();
             var template = Handlebars.compile(source);
-            var cart = (localStorage.cart)? JSON.parse(localStorage.cart): [];
-            var context = {articles: Object.keys(cart).length, items: cart};
+            var order = (localStorage.order)? JSON.parse(localStorage.order) : new Order;
+            var context = {price: order.total.toFixed(2), length: order.products.length};
             var html = template(context);
             $("#cart").html(html);
         }
@@ -87,33 +88,26 @@ var Templates = {
         var source = $("#list-items-template").html();
         var template = Handlebars.compile(source);
         var context = {category: category, items: items};
-        var cat_items = {};
-
-        $.each(context.items, function (item_idx, item_obj){
-            cat_items[item_obj.id] = item_obj;
-        });
-
         var html = template(context);
         $("#content").append(html);
 
-        $(".add-cart").click(function(){
 
-            var item_id = $(this).attr("id");
-            var item = cat_items[item_id];
-            var cart = (localStorage.cart)? JSON.parse(localStorage.cart): [];
-            cart.push(item);
-            localStorage.cart = JSON.stringify(cart);
-            Templates.layout();
-
-        })
     },
     listCart: function(){
         var source = $("#cart-template").html();
         var template = Handlebars.compile(source);
-        var cart = JSON.parse(localStorage.cart);
-        var context = {articles: cart};
+        var order = JSON.parse(localStorage.order);
+        var context = {articles: order.products};
         var html = template(context);
         $("#content").append(html);
+    },
+    currentAddress: function(){
+        var source = $("#current-address-template").html();
+        var template = Handlebars.compile(source);
+        var order = JSON.parse(localStorage.order);
+        var context = order.address;
+        var html = template(context);
+        $("#current-address").append(html);
     }
 
 };

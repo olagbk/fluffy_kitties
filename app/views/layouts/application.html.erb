@@ -19,9 +19,9 @@
     <div id="navigation">
       <ul>
         <li><a href="/" class="active">Home</a></li>
-        <li class="logged-out"><a href="/api/users/new">Create an account</a></li>
-        <li class="logged-out"><a href="/api/login">Log in</a></li>
-        <li class="logged-in"><a href="/" id="logout">Log out</a></li>
+        <li class="logged-out"><a href="/signup" id="signup-link">Create an account</a></li>
+        <li class="logged-out"><a href="/login" id="login-link">Log in</a></li>
+        <li class="logged-in"><a href="/" id="logout-link">Log out</a></li>
       </ul>
     </div>   <!-- End Navigation -->
   </div>
@@ -83,7 +83,7 @@
         <h3>{{category}}</h3>
         <div class="product-desc">
           <p>{{name}}</p>
-          <strong class="price">${{#round}}{{price}}{{/round}}</strong>
+          <strong class="price">${{price}}</strong>
         </div>
       </div>
     </li>
@@ -94,8 +94,8 @@
 <script id="cart-info-template" type="text/x-handlebars-template">
   <a href="/cart" class="cart-link">Your Shopping Cart</a>
   <div class="cl">&nbsp;</div>
-  <span>Articles: <strong><span id="cart-arts">{{#length}}{{items}}{{/length}}</span></strong></span> &nbsp;&nbsp;
-  <span>Cost: <strong>$<span id="cart-cost">{{#round}}{{#total}}{{items}}{{/total}}{{/round}}</span></strong></span>
+  <span>Articles: <strong><span id="cart-arts">{{length}}</span></strong></span> &nbsp;&nbsp;
+  <span>Cost: <strong>$<span id="cart-cost">{{price}}</span></strong></span>
 </script>
 
 <script id="categories-template" type="text/x-handlebars-template">
@@ -129,8 +129,8 @@
               <li> In stock: ???</li>
             </ul>
             <ul class="cart-menu">
-              <li><a  class="add-cart" id="{{id}}">Add to cart</a></li><br>
-              <li><a href="">Buy now</a></li>
+              <li><a class="add-item" id="{{id}}">Add to cart</a></li><br>
+              <li><a class="add-item checkout" id="{{id}}">Buy now</a></li>
             </ul>
           </div>
         </li>
@@ -162,6 +162,14 @@
     <br>
     {{/each}}
   </div>
+</script>
+<script id="current-address-template" type="text/x-handlebars-template">
+  <ul>
+    <li>{{name}} {{surname}}   <a id="edit-address-link">Edit</a></li>
+    <li>{{street}} {{number}}</li>
+    <li>{{city}} {{postcode}}</li>
+    <li>{{country}}</li>
+  </ul>
 </script>
 
 </body>

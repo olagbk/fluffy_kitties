@@ -16,7 +16,7 @@ var init_session = function(email, password) {
                 localStorage.login_token = token_obj.token;
                 set_logged_in(true);
                 setHeaders();
-                window.location = "/home"
+                window.location = localStorage.rootUrl;
             }
         }
     });
@@ -35,11 +35,15 @@ $(document).ready(function(){
 
     (localStorage.login_token)? set_logged_in(true): set_logged_in(false);
 
-    $("#logout").click(function(){
+    $("#logout-link").click(function(){
         localStorage.removeItem("login_token");
         set_logged_in(false);
     });
+    $("#login-link").click(function(){
+        setRootUrl();
+    });
+    $("#signup-link").click(function(){
+        setRootUrl();
 
-
-
+    })
 });
