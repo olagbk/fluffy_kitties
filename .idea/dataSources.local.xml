@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="Rails fluffy_kitties: development" uuid="94d29754-5cb0-4f06-b96c-ae6f435fa25f">
+      <user-name>root</user-name>
+      <user-password>dfc5dfc6dfcb</user-password>
+    </data-source>
+    <data-source name="Rails game_of_life: development" uuid="d30f8148-5b34-45c5-910d-cfc0bedc69fa">
+      <user-name>root</user-name>
+      <user-password>dfc5dfc6dfcb</user-password>
+    </data-source>
+    <data-source name="Rails game_of_life: production" uuid="cc6dd845-ba7f-43e5-a624-42f6f6d2d181">
+      <user-name>root</user-name>
+      <user-password>dfc5dfc6dfcb</user-password>
+    </data-source>
+  </component>
+</project>
