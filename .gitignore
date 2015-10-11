@@ -16,5 +16,11 @@
 !/log/.keep
 /tmp
 
+# ignore database configuration
+/config/database.yml
+
+#ignore jetbrains folder
+/.idea
+
 # Ignore application configuration
 /config/application.yml
