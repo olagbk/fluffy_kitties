@@ -66,11 +66,12 @@
 </div>
 <!-- End Footer -->
 <!-- End Shell -->
+
 <!--templates  -->
 <script id="slides-template" type="text/x-handlebars-template">
   <ul>
     {{#each slides}}
-    <li><a href="#"><img src="assets/{{this}}" alt="" /></a></li>
+    <li><a><img src="assets/{{this}}" alt="" /></a></li>
     {{/each}}
   </ul>
 </script>
@@ -78,7 +79,7 @@
 <script id="main-template" type="text/x-handlebars-template">
   <ul>
     {{#each items}}
-    <li><a href="#"><img src="assets/{{path}}" alt="" /></a>
+    <li><a><img src="assets/{{path}}" alt="" /></a>
       <div class="product-info">
         <h3>{{category}}</h3>
         <div class="product-desc">
@@ -109,7 +110,7 @@
 <script id="more-template" type="text/x-handlebars-template">
   <ul>
     {{#each images}}
-    <li><a href="#"><img src="/assets/{{this}}" alt="" /></a></li>
+    <li><a><img src="/assets/{{this}}" alt="" /></a></li>
     {{/each}}
   </ul>
 </script>
@@ -122,16 +123,21 @@
       <ul>
         <li class="cat-photo"><img src="/assets/{{photo}}" /></li>
         <li class="cat-product-info">
-          <div>
             <h3>{{name}}</h3>
-            <ul>
-              <li>Price: <span class="price-tag">{{#round}}{{price}}{{/round}}</span></li><br>
-              <li> In stock: ???</li>
+          <div class="cat-product-details">
+            <ul class="price-stock">
+              <li>Price: <span class="price-inv-tag">{{#round}}{{price}}{{/round}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                In stock: <span class="price-inv-tag">{{inventory}}</span></li>
+              <li> </li>
             </ul>
+            {{#if inStock}}
             <ul class="cart-menu">
-              <li><a class="add-item" id="{{id}}">Add to cart</a></li><br>
-              <li><a class="add-item checkout" id="{{id}}">Buy now</a></li>
+              <li><button class="add-item" id="{{id}}">Add to cart</button></li><br>
+              <li><button class="add-item checkout" id="{{id}}">Buy now</button></li>
             </ul>
+            {{else}}
+            <br><br><p class="sold-out-msg">This kitty is currently sold out.</p>
+            {{/if}}
           </div>
         </li>
       </ul>
@@ -170,6 +176,74 @@
     <li>{{city}} {{postcode}}</li>
     <li>{{country}}</li>
   </ul>
+</script>
+
+<script id="saved-addresses-template" type="text/x-handlebars-template">
+  <div id="saved-addresses">
+  {{#each addresses}}
+  <div class="address-item">
+    <ul>
+      <li class="address-line-1">{{name}} {{surname}}</li>
+      <li class="address-line-2">{{street}} {{number}}</li>
+      <li class="address-line-3">{{city}} {{postcode}}</li>
+      <li class="address-line-4">{{country}}</li>
+      <li class="address-item-menu"><a class="address-select-link" id="{{id}}">Select</a>
+        &nbsp;&nbsp;&nbsp; <a class="address-delete-link" id="{{id}}">Delete</a></li>
+    </ul></a>
+  </div>
+  {{/each}}
+  </div>
+</script>
+
+<script id="address-form-template" type="text/x-handlebars-template">
+  <table id="address">
+    <tr><td></td><td colspan="3">
+      <h3>Shipping address</h3></td>
+    </tr>
+
+    <tr>
+      <td class="label">Name</td>
+      <td class="wideField" colspan="3"><input class="field address-field" id="name" value="{{name}}"
+                                                /></td>
+      <td class="wideField" colspan="3"><input class="field address-field" id="surname" value="{{surname}}"
+                                                /></td>
+    </tr>
+    <tr>
+      <td class="label">Street address</td>
+      <td class="wideField" colspan="4"><input class="field address-field" id="route" value="{{street}}"
+                                                /></td>
+      <td class="slimField"><input class="field" id="street_number" value="{{number}}"
+                                    /></td>
+    </tr>
+    <tr>
+      <td class="label">City</td>
+      <td class="slimField" colspan="3"><input class="field address-field" id="locality" value="{{city}}"
+                                                /></td>
+      <td class="label">Post code</td>
+      <td class="slimField"><input class="field address-field" id="postal_code" value="{{postcode}}"
+                                    /></td>
+    </tr>
+    <tr>
+    </tr>
+    <tr>
+      <td class="label">Country</td>
+      <td class="slimField" colspan="3"><input class="field address-field"
+                                               id="country" value="{{country}}" /></td>
+    </tr>
+    <tr>
+      <td></td><td></td><td></td><td></td><td></td>
+      <td><button id="addressButton">Save</button></td></tr>
+  </table>
+</script>
+
+<script id="missing-items-template" type="text/x-handlebars-template">
+    <ul>
+      {{#each names}}
+      <li class="missing-item-name">{{this}}</li>
+      {{/each}}
+    </ul>
+
+
 </script>
 
 </body>

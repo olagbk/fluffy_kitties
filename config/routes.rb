@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
 
+  namespace :api do
+  get 'inventory_items/verify'
+  end
+
   get 'orders/create'
 
   root 'page#index'
@@ -15,10 +19,10 @@ Rails.application.routes.draw do
   resources :transactions
 
   namespace :api do
-
     get "users/login" => "users#verify"
+    post "inventory_items" => "inventory_items#verify"
+    put "inventory_items/sold" => "inventory_items#update_all"
     resources :items, :users, :addresses, :orders
-
   end
 
 
