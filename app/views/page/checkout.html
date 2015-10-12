@@ -2,6 +2,10 @@
 <%= javascript_include_tag 'braintree', 'data-turbolinks-track' => true %>
 <%= javascript_include_tag 'checkout', 'data-turbolinks-track' => true %>
 
+<script type="text/javascript">
+    $bt_merchant_id = "<%= Braintree::Configuration.merchant_id %>";
+</script>
+
 <div id="checkout-menu">
     <div id="shipping-info">
         <div id="current-address"></div> <!--this is the selected address-->
@@ -20,7 +24,7 @@
 
 
     <div id="payment-info">
-        <form id="checkout" method="post" action="/transactions/">
+        <form id="checkout" method="post">
             <!--<div id="payment-form"></div>-->
             <!--<input type="submit" value="Pay $10">-->
             <h3>Card details</h3>
@@ -29,112 +33,10 @@
             <label class="label">Month </label><input data-braintree-name="expiration_month" class="field slimField">
             <label class="label">year </label><input data-braintree-name="expiration_year" class="field slimField"><br>
             <label class="label">CVV </label><input data-braintree-name="cvv" class="field slimField"><br>
-            <input type="submit" id="submit-payment" value="Pay">
+
+            <input type="button" id="submit-payment" value="Pay">
 
         </form>
-
-
-
-        <script>
-            braintree.setup("<%= @client_token %>", "custom", {id: "checkout",
-                onPaymentMethodReceived: function (event, nonce) {
-                $('#checkout').append("<input type='hidden' name='payment_method_nonce' value='" + nonce + "'></input>");
-
-                    var order = JSON.parse(localStorage.order);
-                    var product_ids = [];
-                    $.each(order.products, function(product_idx, product_obj){
-                        product_ids.push(product_obj.id)
-                    });
-
-                    //check if items requested by the customer are still in the inventory
-                    var inventory_items = [];
-                    $.ajax({
-                        type: 'POST',
-                        url: '/api/inventory_items',
-                        data: {items: product_ids},
-                        success: function(items){
-
-                            inventory_items = items;
-                            var items_length = Object.keys(items).length;
-                            if (items_length != product_ids.length){ //items are missing
-
-                                var missing_items = product_ids.slice(0);
-                                $.each(items, function(key, value){
-
-                                    var index = missing_items.indexOf(value);
-                                    missing_items.splice(index, 1);
-                                });
-
-                                var names = "";
-                                $.each(missing_items, function(index, id){
-                                    var item_obj = $.grep(order.products, function(e){ return e.id == id;});
-                                    var item_name = item_obj[0].name;
-
-                                    var index = order.products.indexOf(item_obj[0]);
-                                    order.products.splice(index, 1);
-                                    order.total -= item_obj[0].price;
-
-                                    if (names.length == 0) { names += item_name }
-                                    else { names += ", " + item_name }
-                                });
-                                localStorage.order = JSON.stringify(order);
-                                alert("Some of your kitties (" + names + ") are out of stock! Click OK to pick a different kitty or return to checkout.");
-                                window.location = '/cart'
-
-
-
-                            } else { //items available
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '/transactions',
-                                    data: { amount: order.total },
-                                    success: function(){
-                                        //transaction complete
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: '/api/orders',
-                                            data: {
-                                                order: {
-                                                    address_id: order.address.id,
-                                                    total: order.total
-                                                },
-                                                items: order.products
-                                            },
-                                            success: function(order_obj){
-
-                                                var items_ids = [];
-                                                var inv_items_ids = [];
-
-                                                $.each(inventory_items, function(key, value){
-                                                    inv_items_ids.push(key);
-                                                    items_ids.push(value);
-                                                });
-
-                                                $.ajax({
-                                                    type: 'PUT',
-                                                    url: '/api/inventory_items/sold',
-                                                    data: {
-                                                        items: items_ids,
-                                                        inv_items: inv_items_ids,
-                                                        order_id: order_obj.id},
-                                                    success: function(){
-                                                        //order saved
-                                                        localStorage.removeItem("order");
-                                                        window.location = '/processed';
-                                                    }
-                                                });
-                                            }
-                                        })},
-                                    error: function(){
-                                            alert("Transaction error!")
-                                    }
-                                 })
-                            }
-                        }
-                    })
-                }
-            });
-        </script>
     </div>
 </div>
 

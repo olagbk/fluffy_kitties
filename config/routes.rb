@@ -20,8 +20,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     get "users/login" => "users#verify"
-    post "inventory_items" => "inventory_items#verify"
-    put "inventory_items/sold" => "inventory_items#update_all"
+    get "braintree/token" => "braintree#get_token"
+
     resources :items, :users, :addresses, :orders
   end
 
