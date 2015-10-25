@@ -2,26 +2,23 @@ class Api::OrdersController < ApplicationController
   before_action :get_user
 
   def create
+
+    order_details = {}
+    order_details[:missing_items] = []
+    order_details[:order_items] = []
+
     order_prms = params.require(:order).permit!
+    order_prms[:products].each do |pair|
+      item = pair.last
+      order_details[:order_items] << item
+    end
+
+
+
     @order = Order.create({
          :total => order_prms[:total],
          :address_id => order_prms[:address][:id],
          :user_id => @user.id })
-
-    to_import = []
-
-    order_prms[:products].each do |pair|
-      product = pair.last
-
-      @order_item = OrderItem.new({
-          :item_id=>product[:id]
-      })
-
-      @order_item.order = @order
-      to_import << @order_item
-    end
-
-    OrderItem.import(to_import)
 
     reserve_inventory = lambda do
 
@@ -36,7 +33,7 @@ class Api::OrdersController < ApplicationController
           @item.reload #makes another fetch to the database for the current state of this InventoryItem row.
 
           if(@item.order_id != nil) #check that the order_id is still nil
-            reserve_item.call(item_id)
+            return reserve_item.call(item_id)
           else
             @item.order_id = @order.id
             @item.save!
@@ -46,20 +43,27 @@ class Api::OrdersController < ApplicationController
         end
       end
 
-      status_ok = true
+      item_ok = true
+      inventory_ok = true
 
       order_prms[:products].each do |pair|
         order_item = pair.last
 
-        next if (!status_ok)
-        status_ok = reserve_item.call(order_item[:id])
+        item_ok = reserve_item.call(order_item[:id])
+
+        unless item_ok
+          order_details[:missing_items] << order_item[:id]
+          (inventory_ok)? inventory_ok = false : return
+        end
+
       end
 
-      return status_ok
+      return inventory_ok
 
     end
 
     if(reserve_inventory.call())
+
       @order.status = "PENDING_PAYMENT"
       @order.save!
 
@@ -69,6 +73,18 @@ class Api::OrdersController < ApplicationController
       )
 
       if(result.success?)
+
+        to_import = []
+        order_prms[:products].each do |pair|
+          product = pair.last
+
+          @order_item = OrderItem.new({ :item_id=>product[:id] })
+          @order_item.order = @order
+          to_import << @order_item
+        end
+
+        OrderItem.import(to_import)
+
         @order.status = "PAID"
         @order.completed = true
       else
@@ -81,8 +97,10 @@ class Api::OrdersController < ApplicationController
       @order.save!
     end
 
+    order_details[:order] = @order
+
     respond_to do |format|
-       format.json { render :json => @order.to_json(:include => :order_items) }
+      format.json { render :json => order_details }
     end
   end
 end
