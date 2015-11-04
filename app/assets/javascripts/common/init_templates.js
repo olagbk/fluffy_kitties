@@ -91,6 +91,7 @@ var Templates = {
 
         $.each(context.items, function(index, item_obj){
             item_obj.inStock = (item_obj.inventory >= 1);
+            item_obj.availability = (item_obj.inStock)? "InStock" : "OutOfStock"
         });
 
         var html = template(context);

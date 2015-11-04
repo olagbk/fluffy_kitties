@@ -12,6 +12,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require handlebars
+//= require angular
+//= require angular-rails-templates
 //= require_tree ./vendor
 //= require_tree ./common
+//= require_tree ../templates
 

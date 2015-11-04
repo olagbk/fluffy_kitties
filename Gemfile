@@ -25,8 +25,13 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+gem 'angularjs-rails'
+gem 'angular-rails-templates'
 
 gem "braintree"
+gem 'will_paginate', '~> 3.0.7'
+
+gem 'api-pagination'
 gem 'figaro', '~> 0.7.0'
 gem 'activerecord-import', :git=>"https://github.com/zdennis/activerecord-import.git"
 

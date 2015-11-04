@@ -385,4 +385,23 @@ h3.ico4 { background-image:asset-data-url("ico4.gif");}
   }
 }
 
+.admin-nav {
+  text-align: center;
+  margin-top: 20px;
+  li {
+    display: inline;
+    padding: 30px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
 
+.orders-list tr td {
+  text-align: center;
+  border: 1px solid black;
+  padding: 10px;
+}
+.pages li {
+  display: inline;
+  list-style-type: none;
+}

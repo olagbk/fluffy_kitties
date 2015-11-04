@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
 
+  get 'admin/index'
+
   namespace :api do
   get 'inventory_items/verify'
   end
@@ -15,6 +17,7 @@ Rails.application.routes.draw do
   get "signup" => "page#signup"
   get "checkout" => "page#checkout"
   get "processed" => "page#processed"
+  get "admin" => "admin#index"
 
   resources :transactions
 
@@ -23,6 +26,9 @@ Rails.application.routes.draw do
     get "braintree/token" => "braintree#get_token"
 
     resources :items, :users, :addresses, :orders
+  end
+  namespace :admin do
+    root :to => "admin#index"
   end
 
 

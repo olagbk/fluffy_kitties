@@ -1,6 +1,22 @@
 class Api::OrdersController < ApplicationController
   before_action :get_user
 
+  def index
+
+    orders = Order.order("updated_at DESC").paginate(:page => params[:page], :per_page => 10)
+    count = Order.count
+
+    @orders_obj = {
+        orders: orders,
+        count: count
+    }
+
+    respond_to do |format|
+      format.json { render :json => @orders_obj }
+    end
+
+  end
+
   def create
 
     order_details = {}

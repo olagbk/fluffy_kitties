@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Fluffy Kitties</title>
+<head itemscope itemtype="http://schema.org/WebSite">
+  <title itemprop='name'>Fluffy Kitties</title>
+  <meta itemprop='about' content="store" />
+  <meta itemprop='description' content="The cutest kitties from all over the world" />
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <script src="https://js.braintreegateway.com/v1/braintree-data.js"></script>
@@ -80,12 +82,17 @@
 <script id="main-template" type="text/x-handlebars-template">
   <ul>
     {{#each items}}
-    <li><a><img src="assets/{{path}}" alt="" /></a>
+    <li itemscope itemtype="http://schema.org/Product"><a itemprop="image"><img src="assets/{{path}}" alt="" /></a>
       <div class="product-info">
-        <h3>{{category}}</h3>
+        <h3 itemprop="category">{{category}}</h3>
         <div class="product-desc">
-          <p>{{name}}</p>
-          <strong class="price">${{price}}</strong>
+          <p itemprop="name">{{name}}</p>
+          <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+          <strong class="price">
+            <span itemprop="priceCurrency" content="USD">$</span>
+            <span itemprop="price">{{price}}</span>
+          </strong>
+          </div>
         </div>
       </div>
     </li>
@@ -120,16 +127,17 @@
   <h2 class="cat-name">{{category}} kitties</h2>
   <div id="cat-products">
     {{#each items}}
-    <div class="cat-product">
+    <div class="cat-product" itemscope itemtype="http://schema.org/Product">
       <ul>
-        <li class="cat-photo"><img src="/assets/{{photo}}" /></li>
+        <li class="cat-photo" itemprop="image"><img src="/assets/{{photo}}" /></li>
         <li class="cat-product-info">
-            <h3>{{name}}</h3>
+            <h3 itemprop="name">{{name}}</h3>
           <div class="cat-product-details">
             <ul class="price-stock">
-              <li>Price: <span class="price-inv-tag">{{#round}}{{price}}{{/round}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                In stock: <span class="price-inv-tag">{{inventory}}</span></li>
-              <li> </li>
+              <li itemprop="offers" itemscope itemtype="http://schema.org/Offer">Price:
+                <span itemprop="priceCurrency" content="USD"></span>
+                <span class="price-inv-tag" itemprop="price">{{#round}}{{price}}{{/round}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <link itemprop="availability" href="http://schema.org/{{availability}}"/>In stock: <span class="price-inv-tag">{{inventory}}</span></li>
             </ul>
             {{#if inStock}}
             <ul class="cart-menu">
